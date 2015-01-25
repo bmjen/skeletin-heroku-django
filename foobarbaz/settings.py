@@ -120,3 +120,10 @@ COMPRESS_CSS_FILTERS = ['compressor.filters.css_default.CssAbsoluteFilter',  'co
 COMPRESS_PRECOMPILERS = (
     ('text/less', 'lessc {infile} {outfile}'),
 )
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+if True:
+    EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+    EMAIL_FILE_PATH = '/tmp/messages'
+
+DEFAULT_FROM_EMAIL = 'admin@foo.bar'
