@@ -1,0 +1,80 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="http://bootswatch.com/flatly/bootstrap.min.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">FooBarBaz</a>
+          </div>
+        </div>
+      </nav>
+
+      {% load i18n %}
+
+      {% block content %}
+      <div class="page-header" id="banner">
+        <div class="row">
+          <div class="col-lg-8 col-md-7 col-sm-6">
+            <h1>{% trans "Sign Up" %}</h1>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6 col-lg-offset-3">
+          <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6 col-lg-offset-3">
+          <form class="signup form-horizontal"  id="signup_form" method="post" action="{% url 'account_signup' %}">
+            {% csrf_token %}
+            <fieldset>
+              <div class="form-group">
+                <label for="id_username" class="col-lg-3 control-label">Username:</label>
+                <div class="col-lg-9">
+                  <input autofocus="autofocus" class="form-control" id="id_username" name="username" placeholder="Username" type="text" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="id_email" class="col-lg-3 control-label">E-mail:</label>
+                <div class="col-lg-9">
+                  <input class="form-control" id="id_email" name="email" placeholder="E-mail address" type="email" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="id_password1" class="col-lg-3 control-label">Password:</label>
+                <div class="col-lg-9">
+                  <input class="form-control" id="id_password1" name="password1" placeholder="Password" type="password" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="id_password2" class="col-lg-3 control-label">Password (again):</label>
+                <div class="col-lg-9">
+                  <input class="form-control" id="id_password2" name="password2" placeholder="Password (again)" type="password" />
+                  <input id="id_confirmation_key" name="confirmation_key" type="hidden" />
+                </div>
+              </div>
+              {% if redirect_field_value %}
+              <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+              {% endif %}
+              <button class="btn btn-primary pull-right" type="submit">{% trans "Sign Up" %} &raquo;</button>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+      {% endblock %}
+    </div>
+  </body>
+</html>

@@ -21,7 +21,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '76z*3h7a3^2%lhcr90sucwn0dxuiv28j0li7&9ryuh'
 
 # Set the login Redirect URL
-LOGIN_URL = '/login'
+LOGIN_URL = '/accounts/login'
+LOGIN_REDIRECT_URL = ("/")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -30,6 +31,13 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 
 # Application definition
 
@@ -43,6 +51,12 @@ INSTALLED_APPS = (
     'compressor',
     'tastypie',
     'foobarbaz',
+    # The Django sites framework is required
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -120,10 +134,19 @@ COMPRESS_CSS_FILTERS = ['compressor.filters.css_default.CssAbsoluteFilter',  'co
 COMPRESS_PRECOMPILERS = (
     ('text/less', 'lessc {infile} {outfile}'),
 )
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    # Required by `allauth` template tags
+    'django.core.context_processors.request',
+)
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-if True:
-    EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-    EMAIL_FILE_PATH = '/tmp/messages'
+EMAIL_HOST = os.environ.get('SENDGRID_HOST')
+EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME')
+EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD')
+######
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
-DEFAULT_FROM_EMAIL = 'admin@foo.bar'
+DEFAULT_FROM_EMAIL = 'admin@foobar.baz'
+
+SITE_ID = 3
